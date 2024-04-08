@@ -24,9 +24,6 @@
     "devDependencies": {
         "astro": "^4.5.16"
     },
-    "peerDependencies": {
-        "astro": "^4.0.0"
-    },
     "dependencies": {
         "@astrojs/check": "^0.5.10",
         "typescript": "^5.4.4"
