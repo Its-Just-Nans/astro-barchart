@@ -1,0 +1,158 @@
+---
+// Write your component code in this file!
+
+type DataArrayType = { [key: string]: any }[];
+
+interface Props {
+    data: DataArrayType;
+    keyVal: string;
+    nameVal: string;
+    title?: string;
+    yLabel?: string;
+    xLabel?: string;
+    fillColor?: string;
+    xHelpers?: number;
+    yHelpers?: number;
+    xGrid?: boolean;
+    yGrid?: boolean;
+    fontSize?: number;
+    marginTop?: number;
+    marginBottom?: number;
+    width?: number;
+    height?: number;
+    barMargin?: number;
+    border?: number;
+}
+const {
+    data,
+    keyVal,
+    nameVal,
+    title = "",
+    yLabel = "",
+    xLabel = "",
+    fillColor = "teal",
+    xHelpers = 5,
+    yHelpers = 5,
+    xGrid = true,
+    yGrid = true,
+    fontSize = 12,
+    marginTop = 20,
+    marginBottom = 30,
+    width = 500,
+    height = 300,
+    barMargin = 1,
+    border = 40,
+} = Astro.props;
+
+const greatestValue = (values: number[]) => values.reduce((acc, cur) => (cur > acc ? cur : acc), -Infinity);
+const minValue = (values: number[]) => values.reduce((acc, cur) => (cur < acc ? cur : acc), +Infinity);
+const marginsSize = (data.length - 1) * barMargin;
+const barWidth = (width - border * 2 - marginsSize) / data.length;
+const figureHeight = height - marginTop - marginBottom;
+const maxVal = greatestValue(data.map((datum) => datum[keyVal]));
+const minVal = minValue(data.map((datum) => datum[keyVal]));
+const xMaxVal = greatestValue(data.map((datum) => datum[nameVal]));
+const xMinVal = minValue(data.map((datum) => datum[nameVal]));
+---
+
+<svg viewBox={`0 0 ${width} ${height}`} height={"100%"} width={"100%"}>
+    <text y={marginTop / 2} x={width / 2} font-size={`${fontSize}px`} text-anchor="middle">{title}</text>
+    <text y={height - marginTop / 4} x={width / 2} font-size={`${fontSize}px`} text-anchor="middle">{xLabel}</text>
+    <text
+        y={border / 2}
+        x={(-height + marginTop) / 2}
+        font-size={`${fontSize}px`}
+        transform="rotate(-90)"
+        text-anchor="middle">{yLabel}</text
+    >
+    {
+        xHelpers > 0 &&
+            Array.from({ length: xHelpers + 1 }).map((_, val) => {
+                const divisionSpace = figureHeight / xHelpers;
+                const y = marginTop + figureHeight - divisionSpace * val;
+                const text = Math.round(minVal + ((maxVal - minVal) / xHelpers) * val);
+                return (
+                    <>
+                        {xGrid && (
+                            <line
+                                x1={border}
+                                y1={y}
+                                x2={width - border}
+                                y2={y}
+                                stroke="lightgray"
+                                stroke-dasharray="2"
+                            />
+                        )}
+                        <line x1={border - 3} y1={y} x2={border} y2={y} stroke="black" />
+                        <text y={y + 2} x={border - 14} font-size="0.5em">
+                            {text}
+                        </text>
+                    </>
+                );
+            })
+    }
+    {
+        yHelpers > 0 &&
+            Array.from({ length: yHelpers + 1 }).map((_, val) => {
+                const text = Math.round(xMinVal + ((xMaxVal - xMinVal) / yHelpers) * val);
+                return (
+                    <>
+                        {yGrid && (
+                            <line
+                                x1={border + (val * (width - border * 2)) / yHelpers}
+                                y1={marginTop}
+                                x2={border + (val * (width - border * 2)) / yHelpers}
+                                y2={height - marginBottom}
+                                stroke="lightgray"
+                                stroke-dasharray="2"
+                            />
+                        )}
+                        <line
+                            x1={border + (val * (width - border * 2)) / yHelpers}
+                            y1={height - marginBottom}
+                            x2={border + (val * (width - border * 2)) / yHelpers}
+                            y2={height - marginBottom + 3}
+                            stroke="black"
+                        />
+                        <text
+                            y={height - marginBottom + 10}
+                            x={border + (val * (width - border * 2)) / yHelpers}
+                            font-size="0.5em"
+                            text-anchor="middle"
+                        >
+                            {text}
+                        </text>
+                    </>
+                );
+            })
+    }
+    <g transform={`translate(${border})`}>
+        {
+            data.map((datum, index) => {
+                if (datum[keyVal] === 0) return null;
+                const value = (figureHeight * datum[keyVal]) / maxVal;
+                const tooltip = `${datum[keyVal]} movies of ${datum[nameVal]} watched`;
+                return (
+                    <rect
+                        fill={fillColor}
+                        x={(index * (barWidth + barMargin)).toFixed(2)}
+                        y={(marginTop + figureHeight - value).toFixed(2)}
+                        data-name={datum[nameVal]}
+                        data-height={datum[keyVal]}
+                        height={value.toFixed(2)}
+                        width={barWidth.toFixed(2)}
+                    >
+                        <title>{tooltip}</title>
+                    </rect>
+                );
+            })
+        }
+    </g>
+    <rect fill={"none"} x={border} y={marginTop} height={figureHeight} width={width - border * 2} stroke="black"></rect>
+</svg>
+
+<style>
+    rect {
+        cursor: pointer;
+    }
+</style>

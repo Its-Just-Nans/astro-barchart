@@ -1,0 +1,34 @@
+{
+    "name": "astro-barchart",
+    "description": "Astro component to render a barchart",
+    "homepage": "https://github.com/Its-Just-Nans/astro-barchart",
+    "version": "1.0.0",
+    "type": "module",
+    "exports": {
+        ".": "./index.ts",
+        "./astro": "./src/BarChart.astro"
+    },
+    "files": [
+        "src",
+        "index.ts"
+    ],
+    "keywords": [
+        "astro-component",
+        "barchart",
+        "bar-chart",
+        "graph",
+        "astro-graph",
+        "astro-chart"
+    ],
+    "scripts": {},
+    "devDependencies": {
+        "astro": "^4.5.16"
+    },
+    "peerDependencies": {
+        "astro": "^4.0.0"
+    },
+    "dependencies": {
+        "@astrojs/check": "^0.5.10",
+        "typescript": "^5.4.4"
+    }
+}
