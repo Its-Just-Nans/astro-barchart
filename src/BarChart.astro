@@ -22,6 +22,7 @@ interface Props {
     height?: number;
     barMargin?: number;
     border?: number;
+    tooltip?: string;
 }
 const {
     data,
@@ -42,6 +43,7 @@ const {
     height = 300,
     barMargin = 1,
     border = 40,
+    tooltip = `:key :name`,
 } = Astro.props;
 
 const greatestValue = (values: number[]) => values.reduce((acc, cur) => (cur > acc ? cur : acc), -Infinity);
@@ -131,7 +133,7 @@ const xMinVal = minValue(data.map((datum) => datum[nameVal]));
             data.map((datum, index) => {
                 if (datum[keyVal] === 0) return null;
                 const value = (figureHeight * datum[keyVal]) / maxVal;
-                const tooltip = `${datum[keyVal]} movies of ${datum[nameVal]} watched`;
+                const tooltipModified = tooltip.replaceAll(":key", datum[keyVal]).replaceAll(":name", datum[nameVal]);
                 return (
                     <rect
                         fill={fillColor}
@@ -142,7 +144,7 @@ const xMinVal = minValue(data.map((datum) => datum[nameVal]));
                         height={value.toFixed(2)}
                         width={barWidth.toFixed(2)}
                     >
-                        <title>{tooltip}</title>
+                        <title>{tooltipModified}</title>
                     </rect>
                 );
             })
