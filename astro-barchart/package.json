@@ -1,5 +1,9 @@
 {
     "name": "astro-barchart",
+    "workspaces": [
+        "demo",
+        "astro-barchart"
+    ],
     "description": "Astro component to render a barchart",
     "homepage": "https://github.com/Its-Just-Nans/astro-barchart",
     "version": "1.0.2",
