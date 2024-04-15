@@ -53,22 +53,31 @@ const data = [
         <a href="https://github.com/Its-Just-Nans/astro-barchart">https://github.com/Its-Just-Nans/astro-barchart</a>
     </div>
     <br />
-    <AstroBarChart
-        data={data}
-        title="astro-barchart demo"
-        xLabel="Years"
-        yLabel="value"
-        keyVal="value"
-        ,
-        nameVal="key"
-        tooltip=":key in :name"
-    />
+    <div class="chart">
+        <AstroBarChart
+            data={data}
+            title="astro-barchart demo"
+            xLabel="Years"
+            yLabel="value"
+            keyVal="value"
+            ,
+            nameVal="key"
+            tooltip=":key in :name"
+        />
+    </div>
     <div>
-        <a href="https://github.com/Its-Just-Nans/astro-barchart">https://github.com/Its-Just-Nans/astro-barchart</a>
+        <p>this demo code at</p>
+        <a href="https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro">
+            https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro
+        </a>
     </div>
 </Layout>
 
 <style>
+    .chart {
+        margin: auto;
+        max-width: 55%;
+    }
     div {
         text-align: center;
     }
