@@ -37,7 +37,7 @@ const data = [
     },
     {
         key: 2008,
-        value: 5,
+        value: 7,
     },
 ];
 ---
@@ -45,11 +45,15 @@ const data = [
 <Layout title="astro-barchart demo">
     <div>
         <h1>astro-barchart</h1>
-        <img src="https://img.shields.io/npm/d18m/astro-barchart.svg" />
-        <img src="https://img.shields.io/npm/v/astro-barchart" />
-        <div>
-            <code>npm i astro-barchart</code>
-        </div>
+        <a href="https://www.npmjs.com/package/astro-barchart" target="_blank">
+            <img src="https://img.shields.io/npm/d18m/astro-barchart.svg" />
+            <img src="https://img.shields.io/npm/v/astro-barchart" />
+        </a>
+        <a href="https://www.npmjs.com/package/astro-barchart" target="_blank">
+            <div>
+                <code>npm i astro-barchart</code>
+            </div>
+        </a>
         <a href="https://github.com/Its-Just-Nans/astro-barchart">https://github.com/Its-Just-Nans/astro-barchart</a>
     </div>
     <br />
@@ -58,15 +62,14 @@ const data = [
             data={data}
             title="astro-barchart demo"
             xLabel="Years"
-            yLabel="value"
+            yLabel="Values per year"
             keyVal="value"
-            ,
             nameVal="key"
             tooltip=":key in :name"
         />
     </div>
     <div>
-        <p>this demo code at</p>
+        <span>this demo code at</span>
         <a href="https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro">
             https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro
         </a>
