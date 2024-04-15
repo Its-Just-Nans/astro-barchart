@@ -30,13 +30,10 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
-              with:
-                  submodules: "true"
-                  ssh-key: ${{ secrets.SSH_KEY_REPO_DATA }}
             - name: Setup Pages
               uses: actions/configure-pages@v2
             - name: Use Node.js
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
             - name: npm install
               run: cd demo && npm ci --force
             - name: building
