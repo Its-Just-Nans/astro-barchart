@@ -12,7 +12,7 @@
   "dependencies": {
     "@astrojs/check": "^0.5.10",
     "astro": "^4.6.1",
-    "astro-barchart": "^1.0.2",
+    "astro-barchart": "../astro-barchart",
     "typescript": "^5.4.5"
   }
 }

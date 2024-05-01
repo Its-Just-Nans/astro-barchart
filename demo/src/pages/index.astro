@@ -3,91 +3,93 @@ import Layout from "../layouts/Layout.astro";
 import AstroBarChart from "astro-barchart";
 
 const data = [
-    {
-        key: 2000,
-        value: 10,
-    },
-    {
-        key: 2001,
-        value: 5,
-    },
-    {
-        key: 2002,
-        value: 4,
-    },
-    {
-        key: 2003,
-        value: 9,
-    },
-    {
-        key: 2004,
-        value: 1,
-    },
-    {
-        key: 2005,
-        value: 3,
-    },
-    {
-        key: 2006,
-        value: 4,
-    },
-    {
-        key: 2007,
-        value: 5,
-    },
-    {
-        key: 2008,
-        value: 7,
-    },
+  {
+    key: 2000,
+    value: 10,
+  },
+  {
+    key: 2001,
+    value: 5,
+  },
+  {
+    key: 2002,
+    value: 4,
+  },
+  {
+    key: 2003,
+    value: 9,
+  },
+  {
+    key: 2004,
+    value: 1,
+  },
+  {
+    key: 2005,
+    value: 3,
+  },
+  {
+    key: 2006,
+    value: 2,
+  },
+  {
+    key: 2007,
+    value: 6,
+  },
+  {
+    key: 2008,
+    value: 7,
+  },
 ];
 ---
 
 <Layout title="astro-barchart demo">
-    <div>
-        <h1>astro-barchart</h1>
-        <a href="https://www.npmjs.com/package/astro-barchart" target="_blank">
-            <img src="https://img.shields.io/npm/d18m/astro-barchart.svg" />
-            <img src="https://img.shields.io/npm/v/astro-barchart" />
-        </a>
-        <a href="https://www.npmjs.com/package/astro-barchart" target="_blank">
-            <div>
-                <code>npm i astro-barchart</code>
-            </div>
-        </a>
-        <a href="https://github.com/Its-Just-Nans/astro-barchart">https://github.com/Its-Just-Nans/astro-barchart</a>
-    </div>
-    <br />
-    <div class="chart">
-        <AstroBarChart
-            data={data}
-            title="astro-barchart demo"
-            xLabel="Years"
-            yLabel="Values per year"
-            keyVal="value"
-            nameVal="key"
-            tooltip=":key in :name"
-        />
-    </div>
-    <div>
-        <span>this demo code at</span>
-        <a href="https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro">
-            https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro
-        </a>
-    </div>
+  <div>
+    <h1>astro-barchart</h1>
+    <a href="https://www.npmjs.com/package/astro-barchart" target="_blank">
+      <img src="https://img.shields.io/npm/d18m/astro-barchart.svg" />
+      <img src="https://img.shields.io/npm/v/astro-barchart" />
+    </a>
+    <a href="https://www.npmjs.com/package/astro-barchart" target="_blank">
+      <div>
+        <code>npm i astro-barchart</code>
+      </div>
+    </a>
+    <a href="https://github.com/Its-Just-Nans/astro-barchart">https://github.com/Its-Just-Nans/astro-barchart</a>
+  </div>
+  <br />
+  <div class="chart">
+    <AstroBarChart
+      data={data}
+      title="astro-barchart demo"
+      xLabel="Years"
+      yLabel="Values per year"
+      keyVal="value"
+      nameVal="key"
+      tooltip=":key in :name"
+      yHelpers={data.length}
+      xHelpers={4}
+    />
+  </div>
+  <div>
+    <span>this demo code at</span>
+    <a href="https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro">
+      https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro
+    </a>
+  </div>
 </Layout>
 
 <style>
-    .chart {
-        margin: auto;
-        max-width: 55%;
-    }
-    div {
-        text-align: center;
-    }
-    code {
-        background-color: lightgray;
-        padding: 10px;
-        margin: 10px;
-        display: inline-block;
-    }
+  .chart {
+    margin: auto;
+    max-width: 55%;
+  }
+  div {
+    text-align: center;
+  }
+  code {
+    background-color: lightgray;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+  }
 </style>
