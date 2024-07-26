@@ -6,7 +6,7 @@
     ],
     "description": "Astro component to render a barchart",
     "homepage": "https://github.com/Its-Just-Nans/astro-barchart",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "type": "module",
     "exports": {
         ".": "./index.ts",
