@@ -39,6 +39,50 @@ const data = [
     key: 2008,
     value: 7,
   },
+  {
+    key: 2009,
+    value: 0,
+  },
+  {
+    key: 2010,
+    value: 1,
+  },
+  {
+    key: 2011,
+    value: 2,
+  },
+  {
+    key: 2013,
+    value: 3,
+  },
+  {
+    key: 2014,
+    value: 4,
+  },
+  {
+    key: 2015,
+    value: 5,
+  },
+  {
+    key: 2016,
+    value: 6,
+  },
+  {
+    key: 2017,
+    value: 7,
+  },
+  {
+    key: 2018,
+    value: 8,
+  },
+  {
+    key: 2019,
+    value: 9,
+  },
+  {
+    key: 2020,
+    value: 10,
+  },
 ];
 ---
 
@@ -49,12 +93,14 @@ const data = [
       <img src="https://img.shields.io/npm/d18m/astro-barchart.svg" />
       <img src="https://img.shields.io/npm/v/astro-barchart" />
     </a>
-    <a href="https://www.npmjs.com/package/astro-barchart" target="_blank">
+    <a href="https://www.npmjs.com/package/astro-barchart" target="_blank" class="npm-link">
       <div>
         <code>npm i astro-barchart</code>
       </div>
     </a>
-    <a href="https://github.com/Its-Just-Nans/astro-barchart">https://github.com/Its-Just-Nans/astro-barchart</a>
+    <a href="https://github.com/Its-Just-Nans/astro-barchart" target="_blank"
+      >https://github.com/Its-Just-Nans/astro-barchart</a
+    >
   </div>
   <br />
   <div class="chart">
@@ -68,11 +114,12 @@ const data = [
       tooltip=":key in :name"
       yHelpers={data.length}
       xHelpers={4}
+      svgClass="my-class"
     />
   </div>
   <div>
     <span>this demo code at</span>
-    <a href="https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro">
+    <a href="https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro" target="_blank">
       https://github.com/Its-Just-Nans/astro-barchart/blob/main/demo/src/pages/index.astro
     </a>
   </div>
@@ -91,5 +138,8 @@ const data = [
     padding: 10px;
     margin: 10px;
     display: inline-block;
+  }
+  .npm-link {
+    user-select: all;
   }
 </style>

@@ -23,6 +23,7 @@ interface Props {
   barMargin?: number;
   border?: number;
   tooltip?: string;
+  svgClass?: string;
 }
 const {
   data,
@@ -32,7 +33,7 @@ const {
   yLabel = "",
   xLabel = "",
   fillColor = "teal",
-  xHelpers = 5,
+  xHelpers = 1,
   yHelpers = 5,
   xGrid = true,
   yGrid = true,
@@ -44,6 +45,7 @@ const {
   barMargin = 1,
   border = 40,
   tooltip = `:key :name`,
+  svgClass = "astro-barchart-custom-class-default",
 } = Astro.props;
 
 const greatestValue = (values: number[]) => values.reduce((acc, cur) => (cur > acc ? cur : acc), -Infinity);
@@ -53,55 +55,126 @@ const barWidth = (width - border * 2 - marginsSize) / data.length;
 const figureHeight = height - marginTop - marginBottom;
 const maxVal = greatestValue(data.map((datum) => datum[keyVal]));
 const minVal = minValue(data.map((datum) => datum[keyVal]));
+const nbUnit = maxVal - minVal;
+const oneBlock = Math.ceil(figureHeight / nbUnit);
+
+let safe_xHelpers = xHelpers;
+
+if (safe_xHelpers > maxVal - 1) {
+  console.error(`astro-barchart: xHelpers (${xHelpers}) cannot be more than the max value ${maxVal}`);
+  safe_xHelpers = maxVal - 1;
+}
 ---
 
-<svg viewBox={`0 0 ${width} ${height}`} height={"100%"} width={"100%"}>
-  <text y={marginTop / 2} x={width / 2} font-size={`${fontSize}px`} text-anchor="middle">{title}</text>
-  <text y={height - marginTop / 4} x={width / 2} font-size={`${fontSize}px`} text-anchor="middle">{xLabel}</text>
-  <text
-    y={border / 2}
-    x={(-height + marginTop) / 2}
-    font-size={`${fontSize}px`}
-    transform="rotate(-90)"
-    text-anchor="middle">{yLabel}</text
-  >
-  {
-    xHelpers > 0 &&
-      Array.from({ length: xHelpers }).map((_, val, arr) => {
-        const oneBlock = Math.ceil(figureHeight / arr.length);
-        const y = marginTop + figureHeight - oneBlock * val;
-        const text = Math.ceil(((maxVal - minVal) / arr.length) * val);
-        return (
-          <>
-            {xGrid && <line x1={border} y1={y} x2={width - border} y2={y} stroke="lightgray" stroke-dasharray="2" />}
-            <line x1={border - 3} y1={y} x2={border} y2={y} stroke="black" />
-            <text y={y + 2} x={border - 14} font-size="0.5em">
-              {text}
-            </text>
-          </>
-        );
-      })
-  }
-  {
-    yHelpers > 0 &&
-      Array.from({ length: yHelpers }).map((_, val, arr) => {
-        const newIdx = Math.min(Math.round((data.length / arr.length) * val), data.length - 1);
-        const x = border + newIdx * (barWidth + barMargin);
-        const text = data[newIdx][nameVal];
-        return (
-          <>
-            {yGrid && (
-              <line x1={x} y1={marginTop} x2={x} y2={height - marginBottom} stroke="lightgray" stroke-dasharray="2" />
+<svg viewBox={`0 0 ${width} ${height}`} height={"100%"} width={"100%"} class={svgClass}>
+  <g class="astro-barchart-legend">
+    <text class="astro-barchart-title" y={marginTop / 2} x={width / 2} font-size={`${fontSize}px`} text-anchor="middle">
+      {title}
+    </text>
+    <text
+      class="astro-barchart-x-label"
+      y={height - marginTop / 4}
+      x={width / 2}
+      font-size={`${fontSize}px`}
+      text-anchor="middle"
+      >{xLabel}
+    </text>
+    <text
+      class="astro-barchart-y-label"
+      y={border / 2}
+      x={(-height + marginTop) / 2}
+      font-size={`${fontSize}px`}
+      transform="rotate(-90)"
+      text-anchor="middle"
+      >{yLabel}
+    </text>
+  </g>
+  <g class="astro-barchart-x-helpers">
+    {
+      safe_xHelpers > 0 && (
+        <>
+          <g class="astro-barchart-x-helper-top-bar-group">
+            {xGrid && (
+              <line
+                x1={border}
+                y1={marginTop}
+                x2={width - border}
+                y2={marginTop}
+                stroke="lightgray"
+                stroke-dasharray="2"
+              />
             )}
-            <line x1={x} y1={height - marginBottom} x2={x} y2={height - marginBottom + 3} stroke="black" />
-            <text y={height - marginBottom + 10} x={x} font-size="0.5em" text-anchor="middle">
-              {text}
+            <line x1={border - 3} y1={marginTop} x2={border} y2={marginTop} stroke="black" />
+            <text y={marginTop + 2} x={border - 14} font-size="0.5em">
+              {maxVal}
             </text>
-          </>
-        );
-      })
-  }
-  <g transform={`translate(${border})`}>
+          </g>
+          <g class="astro-barchart-x-helper-middle-bar-group">
+            {Array.from({ length: safe_xHelpers }).map((_, val, arr) => {
+              const spacing = Math.floor((maxVal - minVal) / (safe_xHelpers + 1));
+              const currentSpacing = spacing * (val + 1);
+              const y = marginTop + figureHeight - oneBlock * currentSpacing;
+              return (
+                <g class={`astro-barchart-x-helper-middle-bar-group-${currentSpacing}`}>
+                  {xGrid && (
+                    <line x1={border} y1={y} x2={width - border} y2={y} stroke="lightgray" stroke-dasharray="2" />
+                  )}
+                  <line x1={border - 3} y1={y} x2={border} y2={y} stroke="black" />
+                  <text y={y + 2} x={border - 14} font-size="0.5em">
+                    {currentSpacing}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+          <g class="astro-barchart-x-helper-bottom-bar-group">
+            {xGrid && (
+              <line
+                x1={border}
+                y1={marginTop + figureHeight}
+                x2={width - border}
+                y2={marginTop + figureHeight}
+                stroke="lightgray"
+                stroke-dasharray="2"
+              />
+            )}
+            <line
+              x1={border - 3}
+              y1={marginTop + figureHeight}
+              x2={border}
+              y2={marginTop + figureHeight}
+              stroke="black"
+            />
+            <text y={marginTop + figureHeight + 2} x={border - 14} font-size="0.5em">
+              {minVal}
+            </text>
+          </g>
+        </>
+      )
+    }
+  </g>
+  <g class="astro-barchart-y-helpers">
+    {
+      yHelpers > 0 &&
+        Array.from({ length: yHelpers }).map((_, val, arr) => {
+          const newIdx = Math.min(Math.round((data.length / arr.length) * val), data.length - 1);
+          const x = border + newIdx * (barWidth + barMargin);
+          const text = data[newIdx][nameVal];
+          return (
+            <>
+              {yGrid && (
+                <line x1={x} y1={marginTop} x2={x} y2={height - marginBottom} stroke="lightgray" stroke-dasharray="2" />
+              )}
+              <line x1={x} y1={height - marginBottom} x2={x} y2={height - marginBottom + 3} stroke="black" />
+              <text y={height - marginBottom + 10} x={x} font-size="0.5em" text-anchor="middle">
+                {text}
+              </text>
+            </>
+          );
+        })
+    }
+  </g>
+  <g transform={`translate(${border})`} class="astro-barchart-data">
     {
       data.map((datum, index) => {
         if (datum[keyVal] === 0) return null;
@@ -109,6 +182,7 @@ const minVal = minValue(data.map((datum) => datum[keyVal]));
         const tooltipModified = tooltip.replaceAll(":key", datum[keyVal]).replaceAll(":name", datum[nameVal]);
         return (
           <rect
+            class="astro-barchart-rect"
             fill={fillColor}
             x={(index * (barWidth + barMargin)).toFixed(2)}
             y={(marginTop + figureHeight - value).toFixed(2)}
@@ -123,11 +197,18 @@ const minVal = minValue(data.map((datum) => datum[keyVal]));
       })
     }
   </g>
-  <rect fill={"none"} x={border} y={marginTop} height={figureHeight} width={width - border * 2} stroke="black"></rect>
+  <rect
+    class="astro-barchart-rect astro-barchart-frame"
+    fill={"none"}
+    x={border}
+    y={marginTop}
+    height={figureHeight}
+    width={width - border * 2}
+    stroke="black"></rect>
 </svg>
 
 <style>
-  rect {
+  .astro-barchart-rect {
     cursor: pointer;
   }
 </style>
